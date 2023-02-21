@@ -10,3 +10,14 @@ describe("i32ToI64", function()
         assert.are.equal(1, u.i32ToI64(1))
     end)
 end)
+
+describe("i12ToI64", function()
+    it("converts -1i12 to 0xFFFFFFFFFFFFF000i64", function()
+        local minusOneI12 = 0xFFF
+        assert.are.equal( -1, u.i12ToI64(minusOneI12))
+    end)
+
+    it("converts 1i12 to 1i64", function()
+        assert.are.equal(1, u.i12ToI64(1))
+    end)
+end)

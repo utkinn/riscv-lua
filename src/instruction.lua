@@ -156,6 +156,22 @@ local INSTRUCTIONS = {
                 end
             },
         },
+        [0x2] = {
+            [0x0] = {
+                name = "slti",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (numberUtils.i12ToI64(cpu.registers[inst.rs1]) < numberUtils.i12ToI64(inst.imm)) and 1 or 0)
+                end
+            }
+        },
+        [0x3] = {
+            [0x0] = {
+                name = "sltiu",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] < inst.imm) and 1 or 0)
+                end
+            }
+        },
     }
 }
 
