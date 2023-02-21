@@ -133,6 +133,29 @@ local INSTRUCTIONS = {
                 end
             }
         },
+        [0x1] = {
+            [0x0] = {
+                name = "slli",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] << inst.imm) & 0xFFFFFFFF)
+                end
+            }
+        },
+        [0x5] = {
+            [0x0] = {
+                name = "srli",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] >> inst.imm) & 0xFFFFFFFF)
+                end
+            },
+            [0x400] = {
+                name = "srai",
+                exec = function(inst, cpu)
+                    local msb = cpu.registers[inst.rs1] & 0x80000000
+                    cpu:writeReg(inst.rd, ((cpu.registers[inst.rs1] >> inst.imm) | msb) & 0xFFFFFFFF)
+                end
+            },
+        },
     }
 }
 
