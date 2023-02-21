@@ -71,7 +71,14 @@ local INSTRUCTIONS = {
                 exec = function(inst, cpu)
                     cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] >> cpu.registers[inst.rs2]) & 0xFFFFFFFF)
                 end
-            }
+            },
+            [0x20] = {
+                name = "sra",
+                exec = function(inst, cpu)
+                    local msb = cpu.registers[inst.rs1] & 0x80000000
+                    cpu:writeReg(inst.rd, ((cpu.registers[inst.rs1] >> cpu.registers[inst.rs2]) | msb) & 0xFFFFFFFF)
+                end
+            },
         },
     }
 }
