@@ -250,6 +250,19 @@ local INSTRUCTIONS = {
                 end
             }
         },
+    },
+
+    [Opcode.BRANCH] = {
+        [0x0] = {
+            [0x0] = {
+                name = "beq",
+                exec = function(inst, cpu)
+                    if cpu.registers[inst.rs1] == cpu.registers[inst.rs2] then
+                        cpu.registers.pc = cpu.registers.pc + numberUtils.i13ToI64(inst.imm)
+                    end
+                end
+            }
+        }
     }
 }
 

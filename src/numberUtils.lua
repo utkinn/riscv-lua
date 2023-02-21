@@ -18,6 +18,15 @@ function mod.i16ToI64(x)
     end
 end
 
+function mod.i13ToI64(x)
+    local sign = x & 0x1000
+    if sign == 0 then
+        return x
+    else
+        return x | 0xFFFFFFFFFFFFE000
+    end
+end
+
 function mod.i12ToI64(x)
     local sign = x & 0x800
     if sign == 0 then
