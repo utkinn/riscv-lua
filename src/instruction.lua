@@ -313,6 +313,30 @@ local INSTRUCTIONS = {
                 end
             }
         },
+    },
+
+    [Opcode.JAL] = {
+        [0x0] = {
+            [0x0] = {
+                name = "jal",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, cpu.registers.pc + 4)
+                    cpu.registers.pc = cpu.registers.pc + numberUtils.i21ToI64(inst.imm)
+                end
+            }
+        }
+    },
+
+    [Opcode.JALR] = {
+        [0x0] = {
+            [0x0] = {
+                name = "jalr",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, cpu.registers.pc + 4)
+                    cpu:writeReg('pc', numberUtils.i32ToI64(cpu.registers.pc) + numberUtils.i32ToI64(cpu.registers[inst.rs1]) + numberUtils.i12ToI64(inst.imm))
+                end
+            }
+        }
     }
 }
 

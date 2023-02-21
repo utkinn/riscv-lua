@@ -9,6 +9,15 @@ function mod.i32ToI64(x)
     end
 end
 
+function mod.i21ToI64(x)
+    local sign = x & 0x100000
+    if sign == 0 then
+        return x
+    else
+        return x | 0xFFFFFFFFFFE00000
+    end
+end
+
 function mod.i16ToI64(x)
     local sign = x & 0x8000
     if sign == 0 then
