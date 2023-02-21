@@ -57,6 +57,14 @@ local INSTRUCTIONS = {
                 end
             }
         },
+        [0x1] = {
+            [0x0] = {
+                name = "sll",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] << cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                end
+            }
+        },
     }
 }
 
