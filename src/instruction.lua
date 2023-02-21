@@ -172,6 +172,18 @@ local INSTRUCTIONS = {
                 end
             }
         },
+    },
+
+    [Opcode.LOAD] = {
+        [0x0] = {
+            [0x0] = {
+                name = "lb",
+                exec = function(inst, cpu, memory)
+                    local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
+                    cpu:writeReg(inst.rd, memory:readByte(addr))
+                end
+            }
+        }
     }
 }
 
