@@ -9,6 +9,7 @@ function mod.CPU.new()
         }
     }
 
+    cpu.registers[0] = 0
     for i = 1, 31 do
         cpu.registers[i] = 0
     end
@@ -22,7 +23,7 @@ local OPCODES = {
 
 --- Executes a program.
 -- Program is assumed to be at address 0.
--- @param program a table of 32-bit instructions
+-- @param program a table of 32-bit instructions encoded as numbers
 function mod.CPU:execute(program)
     local pc = self.registers.pc
     local instruction = program[pc + 1]
