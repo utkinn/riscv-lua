@@ -2,9 +2,9 @@ local CPU = require("cpu").CPU
 local instructions = require("instruction")
 
 local Instruction = instructions.Instruction
-local getOpcodeAndFunc3ForMnemonic = instructions.getOpcodeAndFunc3ForMnemonic
+local getOpcodeAndFuncsForMnemonic = instructions.getOpcodeAndFuncsForMnemonic
 
-local opcode, funct3 = getOpcodeAndFunc3ForMnemonic("add")
+local opcode, funct3, funct7 = getOpcodeAndFuncsForMnemonic("add")
 
 describe("add", function()
     local cpu
@@ -15,7 +15,7 @@ describe("add", function()
         instructionData = {
             opcode = opcode,
             funct3 = funct3,
-            funct7 = 0,
+            funct7 = funct7,
         }
     end)
 

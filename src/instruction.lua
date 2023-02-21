@@ -16,23 +16,28 @@ local Opcode = {
 }
 
 -- This table is to indexed like this:
--- INSTRUCTIONS[opcode][funct3]
+-- INSTRUCTIONS[opcode][funct3][funct7]
 local INSTRUCTIONS = {
     [Opcode.ARITHMETIC_WITH_REGISTERS] = {
         [0x0] = {
-            name = "add",
-            exec = function(inst, cpu)
-                cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] + cpu.registers[inst.rs2]) & 0xFFFFFFFF)
-            end
+            [0x0] = {
+                name = "add",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] + cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                end
+            }
         }
     }
 }
 
-function mod.getOpcodeAndFunc3ForMnemonic(mnemonic)
+--- Returns the opcode, funct3, and funct7 for a given mnemonic.
+function mod.getOpcodeAndFuncsForMnemonic(mnemonic)
     for opcode, funct3s in pairs(INSTRUCTIONS) do
-        for funct3, instruction in pairs(funct3s) do
-            if instruction.name == mnemonic then
-                return opcode, funct3
+        for funct3, funct7s in pairs(funct3s) do
+            for funct7, instruction in pairs(funct7s) do
+                if instruction.name == mnemonic then
+                    return opcode, funct3, funct7
+                end
             end
         end
     end
@@ -127,7 +132,7 @@ function mod.Instruction.new(instruction)
 end
 
 function mod.Instruction:exec(cpu, memory)
-    local instruction = INSTRUCTIONS[self.opcode][self.funct3]
+    local instruction = INSTRUCTIONS[self.opcode][self.funct3][self.funct7]
     if instruction then
         instruction.exec(self, cpu, memory)
     end
