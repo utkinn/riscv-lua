@@ -337,6 +337,28 @@ local INSTRUCTIONS = {
                 end
             }
         }
+    },
+
+    [Opcode.LUI] = {
+        [0x0] = {
+            [0x0] = {
+                name = "lui",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, inst.imm << 12)
+                end
+            }
+        }
+    },
+
+    [Opcode.AUIPC] = {
+        [0x0] = {
+            [0x0] = {
+                name = "auipc",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, cpu.registers.pc + (inst.imm << 12))
+                end
+            }
+        }
     }
 }
 
