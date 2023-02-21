@@ -65,4 +65,24 @@ describe("Instruction", function()
             assert.are.equal(2050, inst.imm)
         end)
     end)
+
+    it("has a constructor that accepts opcode, rd, funct3, rs1, rs2, funct7, and imm", function()
+        local inst = Instruction.new {
+            opcode = 0x33,
+            rd = 1,
+            funct3 = 3,
+            rs1 = 1,
+            rs2 = 2,
+            funct7 = 0,
+            imm = 5
+        }
+
+        assert.are.equal(0x33, inst.opcode)
+        assert.are.equal(1, inst.rd)
+        assert.are.equal(3, inst.funct3)
+        assert.are.equal(1, inst.rs1)
+        assert.are.equal(2, inst.rs2)
+        assert.are.equal(0, inst.funct7)
+        assert.are.equal(5, inst.imm)
+    end)
 end)
