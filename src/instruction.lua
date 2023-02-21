@@ -213,8 +213,9 @@ local FORMAT_PARSERS = {
             opcode = opcode,
             rd = instruction >> 7 & 0x1F,
             funct3 = instruction >> 12 & 0x7,
+            funct7 = 0,
             rs1 = (instruction >> 15) & 0x1F,
-            imm = instruction >> 20
+            imm = instruction >> 20,
         }
     end,
     S = function(opcode, instruction)
@@ -224,8 +225,9 @@ local FORMAT_PARSERS = {
             opcode = opcode,
             imm = imm1 | (imm2 << 5),
             funct3 = instruction >> 12 & 0x7,
+            funct7 = 0,
             rs1 = (instruction >> 15) & 0x1F,
-            rs2 = (instruction >> 20) & 0x1F
+            rs2 = (instruction >> 20) & 0x1F,
         }
     end,
     B = function(opcode, instruction)
@@ -237,15 +239,18 @@ local FORMAT_PARSERS = {
             opcode = opcode,
             imm = immBit4_1 << 1 | immBit10_5 << 5 | immBit11 << 11 | immBit12 << 12,
             funct3 = instruction >> 12 & 0x7,
+            funct7 = 0,
             rs1 = (instruction >> 15) & 0x1F,
-            rs2 = (instruction >> 20) & 0x1F
+            rs2 = (instruction >> 20) & 0x1F,
         }
     end,
     U = function(opcode, instruction)
         return {
             opcode = opcode,
             rd = instruction >> 7 & 0x1F,
-            imm = instruction & 0xfffff000
+            imm = instruction & 0xfffff000,
+            funct3 = 0,
+            funct7 = 0,
         }
     end,
     J = function(opcode, instruction)
@@ -256,7 +261,9 @@ local FORMAT_PARSERS = {
         return {
             opcode = opcode,
             rd = instruction >> 7 & 0x1F,
-            imm = imm19_12 << 12 | imm11 << 11 | imm10_1 << 1 | imm20 << 20
+            imm = imm19_12 << 12 | imm11 << 11 | imm10_1 << 1 | imm20 << 20,
+            funct3 = 0,
+            funct7 = 0,
         }
     end
 }
