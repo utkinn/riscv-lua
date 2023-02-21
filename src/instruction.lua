@@ -2,6 +2,42 @@ local mod = {}
 
 mod.Instruction = {}
 
+local Opcode = {
+    ARITHMETIC_WITH_REGISTERS = 0x33,
+    ARITHMETIC_WITH_IMMEDIATES = 0x13,
+    LOAD = 0x3,
+    STORE = 0x23,
+    BRANCH = 0x63,
+    JAL = 0x6F,
+    JALR = 0x2F,
+    LUI = 0x37,
+    AUIPC = 0x17,
+    CONTROL_TRANSFER = 0x73
+}
+
+-- This table is to indexed like this:
+-- INSTRUCTIONS[opcode][funct3]
+local INSTRUCTIONS = {
+    [Opcode.ARITHMETIC_WITH_REGISTERS] = {
+        [0x0] = {
+            name = "add",
+            exec = function(inst, cpu)
+                cpu.registers[inst.rd] = cpu.registers[inst.rs1] + cpu.registers[inst.rs2]
+            end
+        }
+    }
+}
+
+function mod.getOpcodeAndFunc3ForMnemonic(mnemonic)
+    for opcode, funct3s in pairs(INSTRUCTIONS) do
+        for funct3, instruction in pairs(funct3s) do
+            if instruction.name == mnemonic then
+                return opcode, funct3
+            end
+        end
+    end
+end
+
 local INSTRUCTION_FORMATS = {
     [0x13] = "I",
     [0x23] = "S",
@@ -62,7 +98,7 @@ local FORMAT_PARSERS = {
             imm = instruction & 0xfffff000
         }
     end,
-    J = function (opcode, instruction)
+    J = function(opcode, instruction)
         local imm19_12 = instruction >> 12 & 0xff
         local imm11 = instruction >> 20 & 0x1
         local imm10_1 = instruction >> 21 & 0x3ff
@@ -78,11 +114,22 @@ local FORMAT_PARSERS = {
 --- Parse an instruction from a number.
 -- @return An Instruction instance, or nil if the instruction is illegal.
 function mod.Instruction.new(instruction)
-    local opcode = instruction & 0x7F
-    local format = INSTRUCTION_FORMATS[opcode]
-    local parser = FORMAT_PARSERS[format]
-    if parser then
-        return parser(opcode, instruction)
+    if type(instruction) == "number" then
+        local opcode = instruction & 0x7F
+        local format = INSTRUCTION_FORMATS[opcode]
+        local parser = FORMAT_PARSERS[format]
+        if parser then
+            return setmetatable(parser(opcode, instruction), { __index = mod.Instruction })
+        end
+    elseif type(instruction) == "table" then
+        return setmetatable(instruction, { __index = mod.Instruction })
+    end
+end
+
+function mod.Instruction:exec(cpu, memory)
+    local instruction = INSTRUCTIONS[self.opcode][self.funct3]
+    if instruction then
+        instruction.exec(self, cpu, memory)
     end
 end
 
