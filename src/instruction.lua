@@ -180,7 +180,7 @@ local INSTRUCTIONS = {
                 name = "lb",
                 exec = function(inst, cpu, memory)
                     local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
-                    cpu:writeReg(inst.rd, memory:readByte(addr))
+                    cpu:writeReg(inst.rd, numberUtils.i8ToI64(memory:readByte(addr)))
                 end
             }
         },
@@ -189,7 +189,7 @@ local INSTRUCTIONS = {
                 name = "lh",
                 exec = function(inst, cpu, memory)
                     local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
-                    cpu:writeReg(inst.rd, memory:readHalfWord(addr))
+                    cpu:writeReg(inst.rd, numberUtils.i16ToI64(memory:readHalfWord(addr)))
                 end
             }
         },

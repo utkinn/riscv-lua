@@ -38,6 +38,19 @@ describe("lh", function()
             assert.are.equal(0x3412, cpu.registers[1])
         end)
 
+        it("(no offset, zero extends negative)", function()
+            memory:writeByte(0x00, 0xFF)
+            memory:writeByte(0x01, 0xFF)
+            instructionData.rd = 1
+            instructionData.rs1 = 0
+            instructionData.imm = 0
+            local inst = Instruction.new(instructionData)
+
+            inst:exec(cpu, memory)
+
+            assert.are.equal(0xFFFFFFFF, cpu.registers[1])
+        end)
+
         it("(offset = 1)", function()
             memory:writeByte(0x00, 0x12)
             memory:writeByte(0x01, 0x34)
