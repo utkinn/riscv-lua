@@ -124,7 +124,15 @@ local INSTRUCTIONS = {
                     cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] | inst.imm) & 0xFFFFFFFF)
                 end
             }
-        }
+        },
+        [0x7] = {
+            [0x0] = {
+                name = "andi",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] & inst.imm) & 0xFFFFFFFF)
+                end
+            }
+        },
     }
 }
 
