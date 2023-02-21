@@ -1,3 +1,5 @@
+local numberUtils = require("numberUtils")
+
 local mod = {}
 
 mod.Instruction = {}
@@ -84,7 +86,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "slt",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] < cpu.registers[inst.rs2]) and 1 or 0)
+                    cpu:writeReg(inst.rd, (numberUtils.i32ToI64(cpu.registers[inst.rs1]) < numberUtils.i32ToI64(cpu.registers[inst.rs2])) and 1 or 0)
                 end
             }
         }

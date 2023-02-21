@@ -19,7 +19,7 @@ describe("slt", function()
         }
     end)
 
-    it("sets rd value to 1 if rs1 < rs2", function()
+    it("sets rd value to 1 if rs1 < rs2 (simple)", function()
         cpu.registers[1] = 0
         cpu.registers[2] = 1
         cpu.registers[3] = 2
@@ -33,10 +33,38 @@ describe("slt", function()
         assert.are.equal(1, cpu.registers[1])
     end)
 
-    it("sets rd value to 0 if rs1 > rs2", function()
+    it("sets rd value to 1 if rs1 < rs2 (with negative rs1)", function()
+        cpu.registers[1] = 0
+        cpu.registers[2] = 0xFFFFFFFF  -- -1
+        cpu.registers[3] = 2
+        instructionData.rd = 1
+        instructionData.rs1 = 2
+        instructionData.rs2 = 3
+        local inst = Instruction.new(instructionData)
+
+        inst:exec(cpu)
+
+        assert.are.equal(1, cpu.registers[1])
+    end)
+
+    it("sets rd value to 0 if rs1 > rs2 (simple)", function()
         cpu.registers[1] = 1
         cpu.registers[2] = 2
         cpu.registers[3] = 1
+        instructionData.rd = 1
+        instructionData.rs1 = 2
+        instructionData.rs2 = 3
+        local inst = Instruction.new(instructionData)
+
+        inst:exec(cpu)
+
+        assert.are.equal(0, cpu.registers[1])
+    end)
+
+    it("sets rd value to 0 if rs1 > rs2 (with negative rs2)", function()
+        cpu.registers[1] = 1
+        cpu.registers[2] = 2
+        cpu.registers[3] = 0xFFFFFFFF  -- -1
         instructionData.rd = 1
         instructionData.rs1 = 2
         instructionData.rs2 = 3
