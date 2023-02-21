@@ -262,7 +262,17 @@ local INSTRUCTIONS = {
                     end
                 end
             }
-        }
+        },
+        [0x1] = {
+            [0x0] = {
+                name = "bne",
+                exec = function(inst, cpu)
+                    if cpu.registers[inst.rs1] ~= cpu.registers[inst.rs2] then
+                        cpu.registers.pc = cpu.registers.pc + numberUtils.i13ToI64(inst.imm)
+                    end
+                end
+            }
+        },
     }
 }
 
