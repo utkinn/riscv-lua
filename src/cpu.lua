@@ -21,6 +21,7 @@ local OPCODES = {
     ADDI = 0x13
 }
 
+-- TODO: update
 --- Executes a program.
 -- Program is assumed to be at address 0.
 -- @param program a table of 32-bit instructions encoded as numbers
@@ -42,6 +43,11 @@ function mod.CPU:execute(program)
     end
 
     self.registers.pc = pc + 4
+end
+
+function mod.CPU:writeReg(reg, value)
+    self.registers[reg] = value & 0xFFFFFFFF
+    self.registers[0] = 0
 end
 
 return mod

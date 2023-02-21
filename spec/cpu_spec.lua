@@ -21,4 +21,27 @@ describe("CPU", function()
         assert.are.equal(1, cpu.registers[1])
         assert.are.equal(4, cpu.registers.pc)
     end)
+
+    describe(":writeReg(n, val)", function()
+        it("writes to register n", function()
+            local cpu = CPU.new()
+            cpu:writeReg(1, 1)
+
+            assert.are.equal(1, cpu.registers[1])
+        end)
+
+        it("trims val to 32 bits", function()
+            local cpu = CPU.new()
+            cpu:writeReg(1, 0xFFFFFFFF + 1)
+
+            assert.are.equal(0, cpu.registers[1])
+        end)
+
+        it("discards writes to 0", function()
+            local cpu = CPU.new()
+            cpu:writeReg(0, 1)
+
+            assert.are.equal(0, cpu.registers[0])
+        end)
+    end)
 end)

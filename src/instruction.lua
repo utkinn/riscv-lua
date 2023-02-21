@@ -22,7 +22,7 @@ local INSTRUCTIONS = {
         [0x0] = {
             name = "add",
             exec = function(inst, cpu)
-                cpu.registers[inst.rd] = (cpu.registers[inst.rs1] + cpu.registers[inst.rs2]) & 0xFFFFFFFF
+                cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] + cpu.registers[inst.rs2]) & 0xFFFFFFFF)
             end
         }
     }

@@ -44,6 +44,23 @@ describe("Instruction", function()
                     assert.are.equal(1, cpu.registers[1])
                 end)
 
+                it("no-op if rd is x0", function()
+                    local cpu = CPU.new()
+                    cpu.registers[1] = 1
+                    local opcode, funct3 = getOpcodeAndFunc3ForMnemonic("add")
+                    local inst = Instruction.new {
+                        opcode = opcode,
+                        funct3 = funct3,
+                        rd = 0,
+                        rs1 = 1,
+                        rs2 = 1,
+                        funct7 = 0
+                    }
+                    inst:exec(cpu, nil)
+
+                    assert.are.equal(0, cpu.registers[0])
+                end)
+
                 it("with overflow", function()
                     local cpu = CPU.new()
                     cpu.registers[1] = 0xFFFFFFFF
