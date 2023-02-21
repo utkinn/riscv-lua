@@ -7,6 +7,8 @@ local INSTRUCTION_FORMATS = {
     [0x23] = "S",
     [0x33] = "R",
     [0x63] = "B",
+    [0x37] = "U",
+    [0x6F] = "J"
 }
 
 local FORMAT_PARSERS = {
@@ -51,6 +53,24 @@ local FORMAT_PARSERS = {
             funct3 = instruction >> 12 & 0x7,
             rs1 = (instruction >> 15) & 0x1F,
             rs2 = (instruction >> 20) & 0x1F
+        }
+    end,
+    U = function(opcode, instruction)
+        return {
+            opcode = opcode,
+            rd = instruction >> 7 & 0x1F,
+            imm = instruction & 0xfffff000
+        }
+    end,
+    J = function (opcode, instruction)
+        local imm19_12 = instruction >> 12 & 0xff
+        local imm11 = instruction >> 20 & 0x1
+        local imm10_1 = instruction >> 21 & 0x3ff
+        local imm20 = instruction >> 31
+        return {
+            opcode = opcode,
+            rd = instruction >> 7 & 0x1F,
+            imm = imm19_12 << 12 | imm11 << 11 | imm10_1 << 1 | imm20 << 20
         }
     end
 }

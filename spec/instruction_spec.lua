@@ -46,5 +46,23 @@ describe("Instruction", function()
             assert.are.equal(1, inst.rs1)
             assert.are.equal(2, inst.rs2)
         end)
+
+        it("U-type ( lui x1, 4096 )", function()
+            local bits = "00000000000000000001000010110111"
+            local inst = Instruction.new(tonumber(bits, 2))
+
+            assert.are.equal(0x37, inst.opcode)
+            assert.are.equal(1, inst.rd)
+            assert.are.equal(4096, inst.imm)
+        end)
+
+        it("J-type ( jal x1, 2050 )", function()
+            local bits = "00000000001100000000000011101111"
+            local inst = Instruction.new(tonumber(bits, 2))
+
+            assert.are.equal(0x6F, inst.opcode)
+            assert.are.equal(1, inst.rd)
+            assert.are.equal(2050, inst.imm)
+        end)
     end)
 end)
