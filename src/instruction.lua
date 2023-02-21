@@ -273,6 +273,46 @@ local INSTRUCTIONS = {
                 end
             }
         },
+        [0x4] = {
+            [0x0] = {
+                name = "blt",
+                exec = function(inst, cpu)
+                    if numberUtils.i32ToI64(cpu.registers[inst.rs1]) < numberUtils.i32ToI64(cpu.registers[inst.rs2]) then
+                        cpu.registers.pc = cpu.registers.pc + numberUtils.i13ToI64(inst.imm)
+                    end
+                end
+            }
+        },
+        [0x5] = {
+            [0x0] = {
+                name = "bge",
+                exec = function(inst, cpu)
+                    if numberUtils.i32ToI64(cpu.registers[inst.rs1]) >= numberUtils.i32ToI64(cpu.registers[inst.rs2]) then
+                        cpu.registers.pc = cpu.registers.pc + numberUtils.i13ToI64(inst.imm)
+                    end
+                end
+            }
+        },
+        [0x6] = {
+            [0x0] = {
+                name = "bltu",
+                exec = function(inst, cpu)
+                    if cpu.registers[inst.rs1] < cpu.registers[inst.rs2] then
+                        cpu.registers.pc = cpu.registers.pc + numberUtils.i13ToI64(inst.imm)
+                    end
+                end
+            }
+        },
+        [0x7] = {
+            [0x0] = {
+                name = "bgeu",
+                exec = function(inst, cpu)
+                    if cpu.registers[inst.rs1] >= cpu.registers[inst.rs2] then
+                        cpu.registers.pc = cpu.registers.pc + numberUtils.i13ToI64(inst.imm)
+                    end
+                end
+            }
+        },
     }
 }
 
