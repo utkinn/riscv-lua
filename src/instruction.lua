@@ -80,6 +80,14 @@ local INSTRUCTIONS = {
                 end
             },
         },
+        [0x2] = {
+            [0x0] = {
+                name = "slt",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] < cpu.registers[inst.rs2]) and 1 or 0)
+                end
+            }
+        }
     }
 }
 
