@@ -201,7 +201,25 @@ local INSTRUCTIONS = {
                     cpu:writeReg(inst.rd, memory:readWord(addr))
                 end
             }
-        }
+        },
+        [0x4] = {
+            [0x0] = {
+                name = "lbu",
+                exec = function(inst, cpu, memory)
+                    local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
+                    cpu:writeReg(inst.rd, memory:readByte(addr))
+                end
+            }
+        },
+        [0x5] = {
+            [0x0] = {
+                name = "lhu",
+                exec = function(inst, cpu, memory)
+                    local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
+                    cpu:writeReg(inst.rd, memory:readHalfWord(addr))
+                end
+            }
+        },
     }
 }
 

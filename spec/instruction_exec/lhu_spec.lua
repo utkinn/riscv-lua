@@ -5,9 +5,9 @@ local instructions = require("instruction")
 local Instruction = instructions.Instruction
 local getOpcodeAndFuncsForMnemonic = instructions.getOpcodeAndFuncsForMnemonic
 
-local opcode, funct3, funct7 = getOpcodeAndFuncsForMnemonic("lh")
+local opcode, funct3, funct7 = getOpcodeAndFuncsForMnemonic("lhu")
 
-describe("lh", function()
+describe("lhu", function()
     local memory
     local cpu
     local instructionData
@@ -38,7 +38,7 @@ describe("lh", function()
             assert.are.equal(0x3412, cpu.registers[1])
         end)
 
-        it("(no offset, sign-extends negative)", function()
+        it("(no offset, zero-extends negative)", function()
             memory:writeByte(0x00, 0xFF)
             memory:writeByte(0x01, 0xFF)
             instructionData.rd = 1
@@ -48,7 +48,7 @@ describe("lh", function()
 
             inst:exec(cpu, memory)
 
-            assert.are.equal(0xFFFFFFFF, cpu.registers[1])
+            assert.are.equal(0xFFFF, cpu.registers[1])
         end)
 
         it("(offset = 1)", function()
