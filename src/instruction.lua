@@ -220,6 +220,36 @@ local INSTRUCTIONS = {
                 end
             }
         },
+    },
+
+    [Opcode.STORE] = {
+        [0x0] = {
+            [0x0] = {
+                name = "sb",
+                exec = function(inst, cpu, memory)
+                    local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
+                    memory:writeByte(addr, cpu.registers[inst.rs2] & 0xFF)
+                end
+            }
+        },
+        [0x1] = {
+            [0x0] = {
+                name = "sh",
+                exec = function(inst, cpu, memory)
+                    local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
+                    memory:writeHalfWord(addr, cpu.registers[inst.rs2] & 0xFFFF)
+                end
+            }
+        },
+        [0x2] = {
+            [0x0] = {
+                name = "sw",
+                exec = function(inst, cpu, memory)
+                    local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
+                    memory:writeWord(addr, cpu.registers[inst.rs2])
+                end
+            }
+        },
     }
 }
 
