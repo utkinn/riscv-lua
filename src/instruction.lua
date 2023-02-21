@@ -98,6 +98,17 @@ local INSTRUCTIONS = {
                 end
             }
         },
+    },
+
+    [Opcode.ARITHMETIC_WITH_IMMEDIATES] = {
+        [0x0] = {
+            [0x0] = {
+                name = "addi",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] + inst.imm) & 0xFFFFFFFF)
+                end
+            }
+        }
     }
 }
 
