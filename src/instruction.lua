@@ -25,13 +25,13 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "add",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] + cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] + cpu.registers[inst.rs2])
                 end
             },
             [0x20] = {
                 name = "sub",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] - cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] - cpu.registers[inst.rs2])
                 end
             }
         },
@@ -39,7 +39,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "xor",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] ~ cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] ~ cpu.registers[inst.rs2])
                 end
             }
         },
@@ -47,7 +47,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "or",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] | cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] | cpu.registers[inst.rs2])
                 end
             }
         },
@@ -55,7 +55,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "and",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] & cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] & cpu.registers[inst.rs2])
                 end
             }
         },
@@ -63,7 +63,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "sll",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] << cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] << cpu.registers[inst.rs2])
                 end
             }
         },
@@ -71,14 +71,14 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "srl",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] >> cpu.registers[inst.rs2]) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] >> cpu.registers[inst.rs2])
                 end
             },
             [0x20] = {
                 name = "sra",
                 exec = function(inst, cpu)
                     local msb = cpu.registers[inst.rs1] & 0x80000000
-                    cpu:writeReg(inst.rd, ((cpu.registers[inst.rs1] >> cpu.registers[inst.rs2]) | msb) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] >> cpu.registers[inst.rs2]) | msb)
                 end
             },
         },
@@ -105,7 +105,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "addi",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] + inst.imm) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] + inst.imm)
                 end
             }
         },
@@ -113,7 +113,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "xori",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] ~ inst.imm) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] ~ inst.imm)
                 end
             }
         },
@@ -121,7 +121,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "ori",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] | inst.imm) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] | inst.imm)
                 end
             }
         },
@@ -129,7 +129,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "andi",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] & inst.imm) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] & inst.imm)
                 end
             }
         },
@@ -137,7 +137,7 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "slli",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] << inst.imm) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] << inst.imm)
                 end
             }
         },
@@ -145,14 +145,14 @@ local INSTRUCTIONS = {
             [0x0] = {
                 name = "srli",
                 exec = function(inst, cpu)
-                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] >> inst.imm) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] >> inst.imm)
                 end
             },
             [0x400] = {
                 name = "srai",
                 exec = function(inst, cpu)
                     local msb = cpu.registers[inst.rs1] & 0x80000000
-                    cpu:writeReg(inst.rd, ((cpu.registers[inst.rs1] >> inst.imm) | msb) & 0xFFFFFFFF)
+                    cpu:writeReg(inst.rd, (cpu.registers[inst.rs1] >> inst.imm) | msb)
                 end
             },
         },
@@ -228,7 +228,7 @@ local INSTRUCTIONS = {
                 name = "sb",
                 exec = function(inst, cpu, memory)
                     local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
-                    memory:writeByte(addr, cpu.registers[inst.rs2] & 0xFF)
+                    memory:writeByte(addr, cpu.registers[inst.rs2])
                 end
             }
         },
@@ -237,7 +237,7 @@ local INSTRUCTIONS = {
                 name = "sh",
                 exec = function(inst, cpu, memory)
                     local addr = cpu.registers[inst.rs1] + numberUtils.i12ToI64(inst.imm)
-                    memory:writeHalfWord(addr, cpu.registers[inst.rs2] & 0xFFFF)
+                    memory:writeHalfWord(addr, cpu.registers[inst.rs2])
                 end
             }
         },
