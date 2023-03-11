@@ -21,6 +21,20 @@ function mod.Memory:_checkAddress(address)
     end
 end
 
+function mod.Memory:read(address, length)
+    local result = ""
+    for i = 0, length - 1 do
+        result = result .. string.char(self:readByte(address + i))
+    end
+    return result
+end
+
+function mod.Memory:write(address, data)
+    for i = 0, #data - 1 do
+        self:writeByte(address + i, string.byte(data, i + 1))
+    end
+end
+
 function mod.Memory:readByte(address)
     self:_checkAddress(address)
     return self._bytes[address] or 0
