@@ -402,7 +402,7 @@ local FORMAT_PARSERS = {
             funct3 = instruction >> 12 & 0x7,
             funct7 = 0,
             rs1 = (instruction >> 15) & 0x1F,
-            imm = instruction >> 20,
+            imm = numberUtils.parseSignedIntFrom12Bits(instruction >> 20),
         }
     end,
     S = function(opcode, instruction)
@@ -465,6 +465,7 @@ function mod.Instruction.new(instruction)
         if parser then
             return setmetatable(parser(opcode, instruction), { __index = mod.Instruction })
         end
+        error("Illegal instruction: " .. string.format("%x", instruction))
     elseif type(instruction) == "table" then
         return setmetatable(instruction, { __index = mod.Instruction })
     end

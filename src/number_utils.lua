@@ -54,4 +54,14 @@ function mod.i8ToI64(x)
     end
 end
 
+function mod.parseSignedIntFrom12Bits(x)
+    local sign = x & 0x800
+    local number = x & 0x7FF
+    if sign == 0 then
+        return number
+    else
+        return -((~number & 0x7FF) + 1)
+    end
+end
+
 return mod
