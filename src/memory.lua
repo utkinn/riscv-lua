@@ -11,6 +11,10 @@ function mod.Memory.new(size)
     return setmetatable(memory, { __index = mod.Memory })
 end
 
+function mod.Memory:size()
+    return self._size
+end
+
 function mod.Memory:_checkAddress(address)
     if address < 0 or address >= self._size then
         error("Memory address out of bounds: " .. address)

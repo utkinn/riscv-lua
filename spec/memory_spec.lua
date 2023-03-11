@@ -36,4 +36,8 @@ describe("Memory", function ()
     it("has 0 at addresses not written before", function ()
         assert.are.equal(0, memory:readByte(0x00))
     end)
+
+    it("has size getter", function ()
+        assert.are.equal(0x100, memory:size())
+    end)
 end)
