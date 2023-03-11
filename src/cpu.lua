@@ -30,6 +30,12 @@ function mod.CPU:execute(program)
     end
 end
 
+function mod.CPU:tick(memory)
+    local instruction = Instruction.new(memory:readWord(self.registers.pc))
+    instruction:exec(self, memory)
+    self.registers.pc = self.registers.pc + 4
+end
+
 function mod.CPU:writeReg(reg, value)
     self.registers[reg] = value & 0xFFFFFFFF
     self.registers[0] = 0
