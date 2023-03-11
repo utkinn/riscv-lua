@@ -1,4 +1,4 @@
-local numberUtils = require("numberUtils")
+local numberUtils = require("number_utils")
 
 local mod = {}
 

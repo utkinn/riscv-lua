@@ -1,4 +1,4 @@
-local u = require("numberUtils")
+local u = require("number_utils")
 
 describe("i32ToI64", function()
     it("converts -1i32 to 0xFFFFFFFFi64", function()
