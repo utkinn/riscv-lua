@@ -33,6 +33,12 @@ local INSTRUCTIONS = {
                 exec = function(inst, cpu)
                     cpu:writeReg(inst.rd, cpu.registers[inst.rs1] - cpu.registers[inst.rs2])
                 end
+            },
+            [0x1] = {
+                name = "mul",
+                exec = function(inst, cpu)
+                    cpu:writeReg(inst.rd, cpu.registers[inst.rs1] * cpu.registers[inst.rs2])
+                end
             }
         },
         [0x4] = {
@@ -98,6 +104,7 @@ local INSTRUCTIONS = {
                 end
             }
         },
+
     },
 
     [Opcode.ARITHMETIC_WITH_IMMEDIATES] = {
