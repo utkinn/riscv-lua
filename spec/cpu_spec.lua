@@ -12,17 +12,6 @@ describe("CPU", function()
         assert.are.equal(0, cpu.registers.pc)
     end)
 
-    it("executes a simplest program with just one \"ADDI x1, x1, 1\"", function()
-        local cpu = CPU.new()
-        local addi_x1_x1_1 = "00000000000100001000000010010011"
-        local program = { tonumber(addi_x1_x1_1, 2) }
-
-        cpu:execute(program)
-
-        assert.are.equal(1, cpu.registers[1])
-        assert.are.equal(4, cpu.registers.pc)
-    end)
-
     describe(":writeReg(n, val)", function()
         it("writes to register n", function()
             local cpu = CPU.new()

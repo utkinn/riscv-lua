@@ -19,17 +19,6 @@ function mod.CPU.new()
     return setmetatable(cpu, { __index = mod.CPU })
 end
 
---- Executes a program.
--- Program is assumed to be at address 0.
--- @param program a table of 32-bit instructions encoded as numbers
-function mod.CPU:execute(program)
-    for i = 1, #program do
-        local instruction = Instruction.new(program[i])
-        instruction:exec(self, {})
-        self.registers.pc = self.registers.pc + 4
-    end
-end
-
 function mod.CPU:tick(memory)
     local instruction = Instruction.new(memory:readWord(self.registers.pc))
     instruction:exec(self, memory)
