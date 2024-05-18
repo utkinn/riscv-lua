@@ -32,6 +32,19 @@ describe("mul", function()
         assert.are.equal(4, cpu.registers[1])
     end)
 
+    it("one negative", function()
+        cpu.registers[1] = 0xFFFFFFFE  -- -2
+        cpu.registers[2] = 2
+        instructionData.rd = 1
+        instructionData.rs1 = 1
+        instructionData.rs2 = 2
+        local inst = Instruction.new(instructionData)
+
+        inst:exec(cpu)
+
+        assert.are.equal(0xFFFFFFFC, cpu.registers[1])  -- -4
+    end)
+
     it("no-op if rd is x0", function()
         cpu.registers[1] = 1
         instructionData.rd = 0
