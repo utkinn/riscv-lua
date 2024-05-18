@@ -71,6 +71,15 @@ local INSTRUCTIONS = {
                 exec = function(inst, cpu)
                     cpu:writeReg(inst.rd, cpu.registers[inst.rs1] << cpu.registers[inst.rs2])
                 end
+            },
+            [0x1] = {
+                name = "mulh",
+                exec = function(inst, cpu)
+                    local a = numberUtils.i32ToI64(cpu.registers[inst.rs1])
+                    local b = numberUtils.i32ToI64(cpu.registers[inst.rs2])
+                    local result = a * b
+                    cpu:writeReg(inst.rd, result >> 32)
+                end
             }
         },
         [0x5] = {
